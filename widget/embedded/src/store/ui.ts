@@ -25,7 +25,7 @@ export const useUiStore = createSelectors(
     isActiveTab: false,
     tabManagerInitiated: false,
     showActivateTabModal: false,
-    watermark: 'NONE',
+    watermark: 'INIT',
     fetchingApiConfig: false,
     activateCurrentTab: (setCurrentTabAsActive, hasRunningSwaps) => {
       const { showActivateTabModal } = get();

@@ -40,13 +40,18 @@ export const Content = styled('div', {
 export const Footer = styled('div', {
   padding: '0 $20 $10',
   '& .footer__logo': {
+    height: 16,
+    transition: 'all 0.5s',
+    overflow: 'hidden',
     opacity: 0,
-    transition: 'opacity 1s ease-in-out',
+    // transition: 'opacity 1s ease-in-out',
+
     '&.logo__show': {
       opacity: 1,
     },
     '&.logo__hidden': {
-      visibility: 'hidden',
+      // visibility: 'hidden',
+      height: 0,
     },
   },
 });

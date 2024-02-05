@@ -30,7 +30,6 @@ function Layout(props: PropsWithChildren<PropTypes>) {
   } = useAppStore();
   const { watermark } = useUiStore();
 
-  const hasWatermark = watermark === 'FULL';
   const { activeTheme } = useTheme(theme || {});
 
   const isConnectWalletHidden = isFeatureHidden(
@@ -77,6 +76,13 @@ function Layout(props: PropsWithChildren<PropTypes>) {
     };
   }, []);
 
+  let a = '';
+  if (watermark === 'FULL') {
+    a = 'logo__show';
+  } else {
+    a = 'logo__hidden';
+  }
+
   return (
     <Container
       height={height}
@@ -119,10 +125,7 @@ function Layout(props: PropsWithChildren<PropTypes>) {
 
         <Divider size={12} />
 
-        <div
-          className={`footer__logo ${
-            hasWatermark ? 'logo__show' : 'logo__hidden'
-          }`}>
+        <div className={`footer__logo ${a}`}>
           <BottomLogo />
         </div>
       </Footer>

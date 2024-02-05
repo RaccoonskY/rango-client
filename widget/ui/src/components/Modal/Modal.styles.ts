@@ -121,8 +121,6 @@ export const Footer = styled('div', {
     '&.logo__show': {
       opacity: 1,
     },
-    '&.logo__hidden': {
-      visibility: 'hidden',
-    },
+    '&.logo__hidden': {},
   },
 });

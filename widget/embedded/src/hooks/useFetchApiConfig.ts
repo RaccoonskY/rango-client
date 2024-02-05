@@ -1,7 +1,7 @@
 import { useUiStore } from '../store/ui';
 import { getConfig } from '../utils/configs';
 
-export type Watermark = 'NONE' | 'FULL';
+export type Watermark = 'NONE' | 'FULL' | 'INIT';
 
 type ConfigResponse = {
   config: {
@@ -28,9 +28,10 @@ export function useFetchApiConfig(): UseFetchApiConfig {
         throw new Error(`Request failed with status: ${response.status} `);
       }
 
-      const data: ConfigResponse = await response.json();
+      const _data: ConfigResponse = await response.json();
 
-      setWatermark(data.config.watermark);
+      setWatermark('FULL');
+      // setWatermark('NONE');
     } catch (error: any) {
       console.error(error.message || 'An error occurred during the fetch.');
     }
