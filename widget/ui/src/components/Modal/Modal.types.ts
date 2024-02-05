@@ -17,6 +17,6 @@ export interface PropTypes {
   container?: HTMLElement;
   containerStyle?: Stitches.CSS<typeof config>;
   footer?: React.ReactNode;
-  hasLogo?: boolean;
+  hasWatermark?: boolean;
   hasCloseIcon?: boolean;
 }

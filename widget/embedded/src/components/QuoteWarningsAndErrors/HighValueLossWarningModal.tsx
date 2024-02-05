@@ -20,6 +20,7 @@ import {
   USD_VALUE_MAX_DECIMALS,
   USD_VALUE_MIN_DECIMALS,
 } from '../../constants/routing';
+import { useUiStore } from '../../store/ui';
 import { getContainer } from '../../utils/common';
 import { numberToString } from '../../utils/numbers';
 
@@ -37,6 +38,9 @@ type Props = {
 export function HighValueLossWarningModal(props: Props) {
   const { open, onClose, onConfirm, warning, confirmationDisabled } = props;
   const type = warning.warningLevel === 'high' ? 'error' : 'warning';
+  const { watermark } = useUiStore();
+
+  const hasWatermark = watermark === 'FULL';
   const highValueLossData = [
     {
       title: i18n.t('Swapping'),
@@ -74,7 +78,11 @@ export function HighValueLossWarningModal(props: Props) {
   ];
 
   return (
-    <Modal open={open} onClose={onClose} container={getContainer()}>
+    <Modal
+      hasWatermark={hasWatermark}
+      open={open}
+      onClose={onClose}
+      container={getContainer()}>
       <MessageBox
         type={type}
         title={errorMessages().highValueLossError.impactTitle}

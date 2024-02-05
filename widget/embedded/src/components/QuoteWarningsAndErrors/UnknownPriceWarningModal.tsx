@@ -4,6 +4,7 @@ import { Button, Divider, MessageBox, Modal, WarningIcon } from '@rango-dev/ui';
 import React from 'react';
 
 import { errorMessages } from '../../constants/errors';
+import { useUiStore } from '../../store/ui';
 import { getContainer } from '../../utils/common';
 
 type Props = {
@@ -16,9 +17,15 @@ type Props = {
 
 export function UnknownPriceWarningModal(props: Props) {
   const { open, onClose, onConfirm, confirmationDisabled } = props;
+  const { watermark } = useUiStore();
 
+  const hasWatermark = watermark === 'FULL';
   return (
-    <Modal open={open} onClose={onClose} container={getContainer()}>
+    <Modal
+      hasWatermark={hasWatermark}
+      open={open}
+      onClose={onClose}
+      container={getContainer()}>
       <MessageBox
         type="warning"
         title={errorMessages().unknownPriceError.impactTitle}

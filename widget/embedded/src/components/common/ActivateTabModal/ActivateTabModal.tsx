@@ -4,12 +4,22 @@ import { i18n } from '@lingui/core';
 import { Button, Divider, MessageBox, Modal } from '@rango-dev/ui';
 import React from 'react';
 
+import { useUiStore } from '../../../store/ui';
 import { getContainer } from '../../../utils/common';
 
 export function ActivateTabModal(props: PropTypes) {
   const { open, onClose, onConfirm } = props;
+  const { watermark } = useUiStore();
+
+  const hasWatermark = watermark === 'FULL';
+
   return (
-    <Modal open={open} dismissible onClose={onClose} container={getContainer()}>
+    <Modal
+      hasWatermark={hasWatermark}
+      open={open}
+      dismissible
+      onClose={onClose}
+      container={getContainer()}>
       <MessageBox
         title={i18n.t('Activate current tab')}
         type="warning"

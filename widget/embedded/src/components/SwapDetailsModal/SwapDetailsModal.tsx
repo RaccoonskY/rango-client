@@ -5,6 +5,7 @@ import { PendingSwapNetworkStatus } from 'rango-types';
 import React from 'react';
 
 import { WIDGET_UI_ID } from '../../constants';
+import { useUiStore } from '../../store/ui';
 
 import { CancelContent } from './SwapDetailsModal.Cancel';
 import { DeleteContent } from './SwapDetailsModal.Delete';
@@ -26,9 +27,12 @@ export function SwapDetailsModal(props: ModalPropTypes) {
     state === PendingSwapNetworkStatus.WaitingForNetworkChange ||
     state === PendingSwapNetworkStatus.WaitingForConnectingWallet ||
     state === PendingSwapNetworkStatus.NetworkChanged;
+  const { watermark } = useUiStore();
 
+  const hasWatermark = watermark === 'FULL';
   return (
     <Modal
+      hasWatermark={hasWatermark}
       open={!!state}
       onClose={onClose}
       container={

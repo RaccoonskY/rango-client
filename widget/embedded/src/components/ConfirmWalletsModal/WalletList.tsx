@@ -45,6 +45,7 @@ import {
 export function WalletList(props: PropTypes) {
   const { chain, isSelected, selectWallet, limit, onShowMore } = props;
   const { config } = useAppStore();
+  const { watermark } = useUiStore();
   const isActiveTab = useUiStore.use.isActiveTab();
 
   const connectedWallets = useWalletsStore.use.connectedWallets();
@@ -138,6 +139,7 @@ export function WalletList(props: PropTypes) {
     disconnectConnectingWallets();
     setOpenWalletStateModal('');
   };
+  const hasWatermark = watermark === 'FULL';
 
   return (
     <>
@@ -206,6 +208,7 @@ export function WalletList(props: PropTypes) {
             />
             {!!experimentalChainWallet && (
               <Modal
+                hasWatermark={hasWatermark}
                 open={!!experimentalChainWallet && showExperimentalChainModal}
                 container={modalContainer}
                 onClose={() => {
@@ -239,6 +242,7 @@ export function WalletList(props: PropTypes) {
             )}
             {addingExperimentalChainStatus && (
               <Modal
+                hasWatermark={hasWatermark}
                 open={!!addingExperimentalChainStatus}
                 onClose={setAddingExperimentalChainStatus.bind(null, null)}
                 container={modalContainer}>

@@ -23,6 +23,7 @@ import {
   USD_VALUE_MIN_DECIMALS,
 } from '../../constants/routing';
 import { useAppStore } from '../../store/AppStore';
+import { useUiStore } from '../../store/ui';
 import { getContainer } from '../../utils/common';
 import {
   formatTooltipNumbers,
@@ -75,7 +76,9 @@ export function QuoteCostDetails(props: QuoteCostDetailsProps) {
   const totalTime = secondsToString(totalArrivalTime(quote.result?.swaps));
   const swaps = quote.result?.swaps ?? [];
   const container = getContainer();
+  const { watermark } = useUiStore();
 
+  const hasWatermark = watermark === 'FULL';
   const totalFee = getTotalFeeInUsd(swaps, tokens);
 
   const feesGroup = getFeesGroup(swaps);
@@ -97,6 +100,7 @@ export function QuoteCostDetails(props: QuoteCostDetailsProps) {
       />
 
       <Modal
+        hasWatermark={hasWatermark}
         container={container}
         open={open}
         header={

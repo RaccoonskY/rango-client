@@ -13,6 +13,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { WIDGET_UI_ID } from '../../constants';
+import { useUiStore } from '../../store/ui';
 import { getContainer } from '../../utils/common';
 
 export function SwapDetailsCompleteModal(props: CompleteModalPropTypes) {
@@ -31,9 +32,12 @@ export function SwapDetailsCompleteModal(props: CompleteModalPropTypes) {
     diagnosisUrl,
   } = props;
   const navigate = useNavigate();
+  const { watermark } = useUiStore();
 
+  const hasWatermark = watermark === 'FULL';
   return (
     <Modal
+      hasWatermark={hasWatermark}
       open={open}
       onClose={onClose}
       container={

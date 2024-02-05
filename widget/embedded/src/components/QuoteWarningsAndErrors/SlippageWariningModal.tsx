@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { navigationRoutes } from '../../constants/navigationRoutes';
 import { useAppStore } from '../../store/AppStore';
+import { useUiStore } from '../../store/ui';
 import { QuoteWarningType } from '../../types';
 import { getContainer } from '../../utils/common';
 
@@ -23,11 +24,15 @@ type PropsTypes = {
 
 export function SlippageWarningModal(props: PropsTypes) {
   const { customSlippage, slippage } = useAppStore();
+  const { watermark } = useUiStore();
   const { open, onClose, onConfirm, warning, confirmationDisabled } = props;
   const navigate = useNavigate();
   const userSlippage = customSlippage ?? slippage;
+  const hasWatermark = watermark === 'FULL';
+
   return (
     <Modal
+      hasWatermark={hasWatermark}
       anchor="bottom"
       open={open}
       prefix={

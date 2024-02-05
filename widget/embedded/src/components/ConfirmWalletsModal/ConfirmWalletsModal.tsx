@@ -23,6 +23,7 @@ import { getQuoteErrorMessage } from '../../constants/errors';
 import { getQuoteUpdateWarningMessage } from '../../constants/warnings';
 import { useAppStore } from '../../store/AppStore';
 import { useQuoteStore } from '../../store/quote';
+import { useUiStore } from '../../store/ui';
 import { useWalletsStore } from '../../store/wallets';
 import { getBlockchainShortNameFor } from '../../utils/meta';
 import { confirmSwapDisabled } from '../../utils/swap';
@@ -52,6 +53,8 @@ export function ConfirmWalletsModal(props: PropTypes) {
   //TODO: move component's logics to a custom hook
   const { open, onClose, onCancel, onCheckBalance, loading } = props;
   const config = useAppStore().config;
+  const { watermark } = useUiStore();
+
   const blockchains = useAppStore().blockchains();
   const {
     quote,
@@ -232,9 +235,13 @@ export function ConfirmWalletsModal(props: PropTypes) {
   ) as HTMLDivElement;
 
   const navigate = useNavigate();
+
+  const hasWatermark = watermark === 'FULL';
+
   return (
     <Modal
       open={open}
+      hasWatermark={hasWatermark}
       onClose={() => {
         if (!quoteWalletsConfirmed) {
           const home = '../';
@@ -292,6 +299,7 @@ export function ConfirmWalletsModal(props: PropTypes) {
       })}
       anchor="center">
       <Modal
+        hasWatermark={hasWatermark}
         open={balanceWarnings.length > 0}
         onClose={setBalanceWarnings.bind(null, [])}
         container={modalContainer}>
