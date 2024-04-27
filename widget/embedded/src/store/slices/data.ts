@@ -7,10 +7,13 @@ import type { StateCreator } from 'zustand';
 
 import { httpService as sdk } from '../../services/httpService';
 import { compareWithSearchFor, containsText } from '../../utils/common';
-import { isTokenExcludedInConfig } from '../../utils/configs';
 import { isTokenNative } from '../../utils/meta';
 import { sortLiquiditySourcesByGroupTitle } from '../../utils/settings';
-import { areTokensEqual, compareTokenBalance } from '../../utils/wallets';
+import {
+  areTokensEqual,
+  compareTokenBalance,
+  createTokenHash,
+} from '../../utils/wallets';
 
 type BlockchainOptions = {
   type?: 'source' | 'destination';
@@ -96,12 +99,38 @@ export const createDataSlice: StateCreator<
       type: options.type,
     });
 
+    const includedTokens = new Set();
+    const excludedTokens = new Set();
+
+    if (supportedTokensConfig) {
+      if (Array.isArray(supportedTokensConfig)) {
+        supportedTokensConfig.forEach((token) =>
+          includedTokens.add(createTokenHash(token))
+        );
+      } else if (!Array.isArray(supportedTokensConfig)) {
+        Object.values(supportedTokensConfig).forEach((value) => {
+          value.tokens.forEach((token) => {
+            if (token.blockchain === options.blockchain) {
+              if (value.isExcluded) {
+                excludedTokens.add(createTokenHash(token));
+              } else {
+                includedTokens.add(createTokenHash(token));
+              }
+            }
+          });
+        });
+      }
+    }
+
     const list = tokensFromState
       .filter((token) => {
-        if (
-          supportedTokensConfig &&
-          isTokenExcludedInConfig(token, supportedTokensConfig)
-        ) {
+        const tokenExcluded =
+          (includedTokens.size > 0 &&
+            !includedTokens.has(createTokenHash(token))) ||
+          (excludedTokens.size > 0 &&
+            excludedTokens.has(createTokenHash(token)));
+
+        if (tokenExcluded) {
           return false;
         }
 
