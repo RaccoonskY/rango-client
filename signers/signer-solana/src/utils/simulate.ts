@@ -7,6 +7,7 @@ import { getSolanaConnection } from './helpers';
 const INSTRUCTION_INDEX = 4;
 const INSUFFICIENT_FUNDS_ERROR_CODE = 0x1;
 const SLIPPAGE_ERROR_CODE = 0x1771;
+const PROGRAM_FAILED_TO_COMPLETE_ERROR = 'ProgramFailedToComplete';
 
 type SimulationResponseError =
   | string
@@ -49,24 +50,31 @@ function getSimulationError(
    * trying to detect common errors (e.g. insufficient fund or slippage error)
    * We could probably remove this code after upgrading solana/web3 lib to v2
    */
-  if (
-    typeof error === 'object' &&
-    error?.InstructionError?.[0] === INSTRUCTION_INDEX &&
-    typeof error?.InstructionError?.[1] === 'object'
-  ) {
+  if (typeof error === 'object' && error?.InstructionError) {
     if (
-      error?.InstructionError?.[1]?.Custom === INSUFFICIENT_FUNDS_ERROR_CODE
+      error?.InstructionError?.[0] === INSTRUCTION_INDEX &&
+      typeof error?.InstructionError?.[1] === 'object'
     ) {
-      const insufficentLamportErrorMessage = logs?.find((log) =>
-        log.toLowerCase()?.includes('insufficient lamports')
-      );
+      if (
+        error?.InstructionError?.[1]?.Custom === INSUFFICIENT_FUNDS_ERROR_CODE
+      ) {
+        const insufficentLamportErrorMessage = logs?.find((log) =>
+          log.toLowerCase()?.includes('insufficient lamports')
+        );
 
-      message = insufficentLamportErrorMessage
-        ? insufficentLamportErrorMessage
-        : 'Insufficient funds';
-    } else if (error?.InstructionError?.[1]?.Custom === SLIPPAGE_ERROR_CODE) {
-      message = 'Slippage error';
+        message = insufficentLamportErrorMessage
+          ? insufficentLamportErrorMessage
+          : 'Insufficient funds';
+      } else if (error?.InstructionError?.[1]?.Custom === SLIPPAGE_ERROR_CODE) {
+        message = 'Slippage error';
+      }
+    } else if (
+      error?.InstructionError?.[1] === PROGRAM_FAILED_TO_COMPLETE_ERROR
+    ) {
+      message = 'Program failed to complete';
     }
+  } else if (error === 'AccountNotFound') {
+    message = 'Fee payer of transaction is an unknown account';
   }
 
   return new SignerError(
