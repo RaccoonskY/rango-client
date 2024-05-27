@@ -3,6 +3,8 @@ import type { PropTypes } from './Slider.types';
 import { Typography } from '@rango-dev/ui';
 import React, { useEffect } from 'react';
 
+import { PLAYGROUND_CONTAINER_ID } from '../../constants';
+
 import {
   Content,
   RangeWrapper,
@@ -27,12 +29,27 @@ function Slider(props: PropTypes) {
     const sliderEl = document.querySelector(`#${id}`) as HTMLInputElement;
     const sliderValue = parseInt(sliderEl.value);
     const mainValue = sliderValue * (MAX_VALUE / (max as number));
-    sliderEl.style.background = `linear-gradient(to right, #5BABFF ${mainValue}%, #C8E2FF ${mainValue}%)`;
+    // Get CSS variables
+    const referenceElement = document.querySelector(
+      `#${PLAYGROUND_CONTAINER_ID}`
+    );
+
+    if (referenceElement) {
+      const sliderColorActive = getComputedStyle(
+        referenceElement
+      ).getPropertyValue('--colors-secondary500');
+
+      const sliderColorInactive = getComputedStyle(
+        referenceElement
+      ).getPropertyValue('--colors-secondary100');
+
+      sliderEl.style.background = `linear-gradient(to right, ${sliderColorActive} ${mainValue}%, ${sliderColorInactive} ${mainValue}%)`;
+    }
   };
 
   useEffect(() => {
     progressScript();
-  }, []);
+  }, [value]);
 
   return (
     <SliderContainer>

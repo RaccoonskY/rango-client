@@ -86,6 +86,7 @@ export function WalletSection() {
           allWalletList.map((wallet) => wallet.name)
         }
         list={allWalletList}
+        disabled={!!externalWallets}
         onChange={onChangeWallets}
       />
       <Divider size={24} />
