@@ -219,4 +219,9 @@ export type WidgetConfig = {
   __UNSTABLE_OR_INTERNAL__?: {
     walletConnectListedDesktopWalletLink?: string;
   };
+
+  // Note: It is advised against adding this to the configuration.
+  __INTERNAL_DONT_USE__?: {
+    shouldUpdateSettingsWithConfig?: boolean;
+  };
 };

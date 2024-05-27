@@ -23,6 +23,9 @@ export function App() {
     features: {
       theme: 'hidden',
     },
+    __INTERNAL_DONT_USE__: {
+      shouldUpdateSettingsWithConfig: true,
+    },
   };
 
   /*
