@@ -22,6 +22,7 @@ function Slider(props: PropTypes) {
     variant = 'custom',
     min,
     max = MAX_VALUE,
+    color,
     id,
   } = props;
 
@@ -32,24 +33,17 @@ function Slider(props: PropTypes) {
     // Get CSS variables
     const referenceElement = document.querySelector(
       `#${PLAYGROUND_CONTAINER_ID}`
-    );
-
-    if (referenceElement) {
-      const sliderColorActive = getComputedStyle(
-        referenceElement
-      ).getPropertyValue('--colors-secondary500');
-
-      const sliderColorInactive = getComputedStyle(
-        referenceElement
-      ).getPropertyValue('--colors-secondary100');
-
-      sliderEl.style.background = `linear-gradient(to right, ${sliderColorActive} ${mainValue}%, ${sliderColorInactive} ${mainValue}%)`;
-    }
+    ) as Element;
+    const sliderColorActive = color;
+    const sliderColorInactive = getComputedStyle(
+      referenceElement
+    ).getPropertyValue('--colors-secondary100');
+    sliderEl.style.background = `linear-gradient(to right, ${sliderColorActive} ${mainValue}%, ${sliderColorInactive} ${mainValue}%)`;
   };
 
   useEffect(() => {
     progressScript();
-  }, [value]);
+  }, [value, color]);
 
   return (
     <SliderContainer>
