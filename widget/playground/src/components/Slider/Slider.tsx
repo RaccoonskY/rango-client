@@ -13,6 +13,7 @@ import {
 } from './Slider.styles';
 
 const MAX_VALUE = 100;
+const DEFAULT_COLOR = '#2284ED';
 function Slider(props: PropTypes) {
   const {
     title,
@@ -22,7 +23,7 @@ function Slider(props: PropTypes) {
     variant = 'custom',
     min,
     max = MAX_VALUE,
-    color,
+    color = DEFAULT_COLOR,
     id,
   } = props;
 
@@ -34,11 +35,11 @@ function Slider(props: PropTypes) {
     const referenceElement = document.querySelector(
       `#${PLAYGROUND_CONTAINER_ID}`
     ) as Element;
-    const sliderColorActive = color;
+    const sliderActiveColor = color;
     const sliderColorInactive = getComputedStyle(
       referenceElement
     ).getPropertyValue('--colors-secondary100');
-    sliderEl.style.background = `linear-gradient(to right, ${sliderColorActive} ${mainValue}%, ${sliderColorInactive} ${mainValue}%)`;
+    sliderEl.style.background = `linear-gradient(to right, ${sliderActiveColor} ${mainValue}%, ${sliderColorInactive} ${mainValue}%)`;
   };
 
   useEffect(() => {

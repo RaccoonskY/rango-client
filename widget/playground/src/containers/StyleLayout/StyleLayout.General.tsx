@@ -142,7 +142,7 @@ export function General() {
           </FieldTitle>
           <Divider size={16} />
           <Slider
-            color={colors?.[mode]?.secondary || '#2284ED'}
+            color={colors?.[mode]?.secondary}
             showValue
             title="Widget"
             id="range1"
@@ -152,7 +152,7 @@ export function General() {
           />
           <Divider size={4} />
           <Slider
-            color={colors?.[mode]?.secondary || '#2284ED'}
+            color={colors?.[mode]?.secondary}
             id="range2"
             showValue
             title="Button"
