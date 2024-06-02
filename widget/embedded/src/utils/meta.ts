@@ -17,6 +17,14 @@ export function getBlockchainShortNameFor(
     ?.shortName;
 }
 
+export function getBlockchainImage(
+  blockchainName: string,
+  blockchains: BlockchainMeta[]
+): string | undefined {
+  return blockchains.find((blockchain) => blockchain.name === blockchainName)
+    ?.logo;
+}
+
 export function getSwapperDisplayName(
   swapperId: string,
   swappers: SwapperMeta[]
@@ -30,6 +38,13 @@ export function findToken(t: Asset, tokens: Token[]) {
 
 export function findBlockchain(name: string, blockchains: BlockchainMeta[]) {
   return blockchains.find((blockchain) => blockchain.name === name) ?? null;
+}
+
+export function getTokenImage(
+  token: Asset,
+  tokens: Token[]
+): string | undefined {
+  return findToken(token, tokens)?.image;
 }
 
 export function isTokenNative(

@@ -24,5 +24,6 @@ export interface WidgetInfoContextInterface {
   resetLanguage: () => void;
   notifications: {
     list: Notification[];
+    clearAll: () => void;
   };
 }
