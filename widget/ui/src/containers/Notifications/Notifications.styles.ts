@@ -1,5 +1,5 @@
-import { Button, ListItemButton } from '../../../src/components';
-import { darkTheme, styled } from '../../../src/theme';
+import { Button, ListItemButton } from '../../components';
+import { darkTheme, styled } from '../../theme';
 
 export const Container = styled('div', {
   padding: '0 $10 $10 $10',

@@ -3,8 +3,8 @@ import type { PropTypes } from './Notifications.types';
 import { i18n } from '@lingui/core';
 import React from 'react';
 
-import { ChainToken, Divider, Typography } from '../../../src/components';
-import { ChevronRightIcon } from '../../../src/icons';
+import { ChainToken, Divider, Typography } from '../../components';
+import { ChevronRightIcon } from '../../icons';
 
 import { NotificationNotFound } from './NotificationNotFound';
 import {

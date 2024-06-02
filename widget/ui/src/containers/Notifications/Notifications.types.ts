@@ -1,4 +1,4 @@
-import type { CSS } from '../../../src/theme';
+import type { CSS } from '../../theme';
 import type { Asset } from 'rango-sdk';
 
 type Notification = {

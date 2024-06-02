@@ -1,8 +1,8 @@
 import { i18n } from '@lingui/core';
 import React from 'react';
 
-import { Divider, Typography } from '../../../src/components';
-import { NoNotificationIcon } from '../../../src/icons';
+import { Divider, Typography } from '../../components';
+import { NoNotificationIcon } from '../../icons';
 
 import { NotFoundContainer } from './Notifications.styles';
 
