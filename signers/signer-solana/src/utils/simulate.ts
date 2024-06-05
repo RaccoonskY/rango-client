@@ -35,6 +35,13 @@ export async function simulateTransaction(
   }
 }
 
+function getInsufficientFundsErrorMessage(logs: string[] | null) {
+  const insufficientLamportErrorMessage = logs?.find((log) =>
+    log.toLowerCase()?.includes('insufficient lamports')
+  );
+  return insufficientLamportErrorMessage || 'Insufficient funds';
+}
+
 function getSimulationError(
   error: string | { [key: string]: any },
   logs: string[] | null
@@ -52,26 +59,24 @@ function getSimulationError(
         ? 'Attempt to debit an account but found no record of a prior credit.'
         : error;
   } else {
-    if (error?.InstructionError) {
-      if (typeof error?.InstructionError?.[1] === 'object') {
-        if (
-          error?.InstructionError?.[1]?.Custom === INSUFFICIENT_FUNDS_ERROR_CODE
-        ) {
-          const insufficentLamportErrorMessage = logs?.find((log) =>
-            log.toLowerCase()?.includes('insufficient lamports')
-          );
+    if (
+      Array.isArray(error?.InstructionError) &&
+      error.InstructionError.length > 1
+    ) {
+      const instructionError = error.InstructionError[1];
 
-          message = insufficentLamportErrorMessage
-            ? insufficentLamportErrorMessage
-            : 'Insufficient funds';
-        } else if (
-          error?.InstructionError?.[1]?.Custom === SLIPPAGE_ERROR_CODE
-        ) {
-          message = 'Slippage error';
+      if (typeof instructionError === 'object') {
+        switch (instructionError.Custom) {
+          case INSUFFICIENT_FUNDS_ERROR_CODE:
+            message = getInsufficientFundsErrorMessage(logs);
+            break;
+          case SLIPPAGE_ERROR_CODE:
+            message = 'Slippage error';
+            break;
+          default:
+            break;
         }
-      } else if (
-        error?.InstructionError?.[1] === PROGRAM_FAILED_TO_COMPLETE_ERROR
-      ) {
+      } else if (instructionError === PROGRAM_FAILED_TO_COMPLETE_ERROR) {
         message = 'Program failed to complete';
       }
     } else if (error?.InsufficientFundsForRent) {
