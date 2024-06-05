@@ -4,10 +4,10 @@ import { SignerError, SignerErrorCode } from 'rango-types';
 
 import { getSolanaConnection } from './helpers';
 
-const INSTRUCTION_INDEX = 4;
-const INSUFFICIENT_FUNDS_ERROR_CODE = 0x1;
-const SLIPPAGE_ERROR_CODE = 0x1771;
+const INSUFFICIENT_FUNDS_ERROR_CODE = 1;
+const SLIPPAGE_ERROR_CODE = 6001;
 const PROGRAM_FAILED_TO_COMPLETE_ERROR = 'ProgramFailedToComplete';
+const ACCOUNT_NOT_FOUND_ERROR = 'AccountNotFound';
 
 export async function simulateTransaction(
   tx: Transaction | VersionedTransaction,
@@ -35,7 +35,10 @@ export async function simulateTransaction(
   }
 }
 
-function getSimulationError(error: any, logs: string[] | null) {
+function getSimulationError(
+  error: string | { [key: string]: any },
+  logs: string[] | null
+) {
   let message =
     (logs?.length || 0) > 0 ? logs?.[logs?.length - 1] : JSON.stringify(error);
 
@@ -43,37 +46,38 @@ function getSimulationError(error: any, logs: string[] | null) {
    * trying to detect common errors (e.g. insufficient fund or slippage error)
    * We could probably remove this code after upgrading solana/web3 lib to v2
    */
-  if (typeof error === 'object' && error?.InstructionError) {
-    if (
-      error?.InstructionError?.[0] === INSTRUCTION_INDEX &&
-      typeof error?.InstructionError?.[1] === 'object'
-    ) {
-      if (
-        error?.InstructionError?.[1]?.Custom === INSUFFICIENT_FUNDS_ERROR_CODE
-      ) {
-        const insufficentLamportErrorMessage = logs?.find((log) =>
-          log.toLowerCase()?.includes('insufficient lamports')
-        );
+  if (typeof error === 'string') {
+    message =
+      error === ACCOUNT_NOT_FOUND_ERROR
+        ? 'Attempt to debit an account but found no record of a prior credit.'
+        : error;
+  } else {
+    if (error?.InstructionError) {
+      if (typeof error?.InstructionError?.[1] === 'object') {
+        if (
+          error?.InstructionError?.[1]?.Custom === INSUFFICIENT_FUNDS_ERROR_CODE
+        ) {
+          const insufficentLamportErrorMessage = logs?.find((log) =>
+            log.toLowerCase()?.includes('insufficient lamports')
+          );
 
-        message = insufficentLamportErrorMessage
-          ? insufficentLamportErrorMessage
-          : 'Insufficient funds';
-      } else if (error?.InstructionError?.[1]?.Custom === SLIPPAGE_ERROR_CODE) {
-        message = 'Slippage error';
+          message = insufficentLamportErrorMessage
+            ? insufficentLamportErrorMessage
+            : 'Insufficient funds';
+        } else if (
+          error?.InstructionError?.[1]?.Custom === SLIPPAGE_ERROR_CODE
+        ) {
+          message = 'Slippage error';
+        }
+      } else if (
+        error?.InstructionError?.[1] === PROGRAM_FAILED_TO_COMPLETE_ERROR
+      ) {
+        message = 'Program failed to complete';
       }
-    } else if (
-      error?.InstructionError?.[1] === PROGRAM_FAILED_TO_COMPLETE_ERROR
-    ) {
-      message = 'Program failed to complete';
-    } else {
-      message = 'Custom program error';
+    } else if (error?.InsufficientFundsForRent) {
+      message =
+        'Transaction results in an account with insufficient funds for rent.';
     }
-  } else if (typeof error === 'object' && error?.InsufficientFundsForRent) {
-    message =
-      'Transaction results in an account with insufficient funds for rent.';
-  } else if (error === 'AccountNotFound') {
-    message =
-      'Attempt to debit an account but found no record of a prior credit.';
   }
 
   return new SignerError(
