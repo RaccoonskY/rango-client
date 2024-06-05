@@ -9,10 +9,6 @@ const INSUFFICIENT_FUNDS_ERROR_CODE = 0x1;
 const SLIPPAGE_ERROR_CODE = 0x1771;
 const PROGRAM_FAILED_TO_COMPLETE_ERROR = 'ProgramFailedToComplete';
 
-type SimulationResponseError =
-  | string
-  | { InstructionError: [number, string | { [key: string]: number | string }] };
-
 export async function simulateTransaction(
   tx: Transaction | VersionedTransaction,
   type: 'VERSIONED' | 'LEGACY'
@@ -34,15 +30,12 @@ export async function simulateTransaction(
        */
       console.error('Simulation Error:', { err, logs });
 
-      throw getSimulationError(err as SimulationResponseError, logs);
+      throw getSimulationError(err, logs);
     }
   }
 }
 
-function getSimulationError(
-  error: SimulationResponseError,
-  logs: string[] | null
-) {
+function getSimulationError(error: any, logs: string[] | null) {
   let message =
     (logs?.length || 0) > 0 ? logs?.[logs?.length - 1] : JSON.stringify(error);
 
@@ -72,9 +65,15 @@ function getSimulationError(
       error?.InstructionError?.[1] === PROGRAM_FAILED_TO_COMPLETE_ERROR
     ) {
       message = 'Program failed to complete';
+    } else {
+      message = 'Custom program error';
     }
+  } else if (typeof error === 'object' && error?.InsufficientFundsForRent) {
+    message =
+      'Transaction results in an account with insufficient funds for rent.';
   } else if (error === 'AccountNotFound') {
-    message = 'Fee payer of transaction is an unknown account';
+    message =
+      'Attempt to debit an account but found no record of a prior credit.';
   }
 
   return new SignerError(
