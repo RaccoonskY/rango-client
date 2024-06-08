@@ -23,8 +23,8 @@ export function App() {
     features: {
       theme: 'hidden',
     },
-    __INTERNAL_DONT_USE__: {
-      shouldUpdateSettingsWithConfig: true,
+    _INTERNAL_SETTINGS_: {
+      autoUpdateSettings: true,
     },
   };
 

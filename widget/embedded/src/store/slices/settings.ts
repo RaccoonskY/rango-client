@@ -169,7 +169,7 @@ export const createSettingsSlice: StateCreator<
       ...(isLiquidityHidden && {
         disabledLiquiditySources: nextConfig.liquiditySources || [],
       }),
-      ...(nextConfig?.__INTERNAL_DONT_USE__?.shouldUpdateSettingsWithConfig && {
+      ...(nextConfig?._INTERNAL_SETTINGS_?.autoUpdateSettings && {
         language: nextConfig.language || DEFAULT_LANGUAGE,
       }),
     });
