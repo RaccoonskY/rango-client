@@ -3,7 +3,7 @@ import type { PropTypes } from './Slider.types';
 import { Typography } from '@rango-dev/ui';
 import React, { useEffect } from 'react';
 
-import { PLAYGROUND_CONTAINER_ID } from '../../constants';
+import { DEFAULT_THEME_COLORS, PLAYGROUND_CONTAINER_ID } from '../../constants';
 
 import {
   Content,
@@ -13,7 +13,7 @@ import {
 } from './Slider.styles';
 
 const MAX_VALUE = 100;
-const DEFAULT_COLOR = '#2284ED';
+const DEFAULT_COLOR = DEFAULT_THEME_COLORS.light.secondary;
 function Slider(props: PropTypes) {
   const {
     title,
