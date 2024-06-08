@@ -222,6 +222,6 @@ export type WidgetConfig = {
 
   // Internal configuration options. Not intended for public use or modification.
   _INTERNAL_SETTINGS_?: {
-    autoUpdateSettings?: boolean; // If true, settings will be updated automatically based on the configuration. };
+    autoUpdateSettings?: boolean; // If true, settings will be updated automatically based on the configuration.
   };
 };
