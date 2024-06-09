@@ -3,6 +3,7 @@ import type { ConnectedWallet } from './store/wallets';
 import type {
   BlockchainAndTokenConfig,
   Tokens,
+  WalletInfoWithNamespaces,
   WidgetColors,
   WidgetColorsKeys,
   WidgetConfig,
@@ -64,6 +65,7 @@ import { WidgetWallets } from './containers/Wallets';
 import { Widget } from './containers/Widget';
 import { useWidget } from './containers/WidgetInfo';
 import { WidgetProvider } from './containers/WidgetProvider';
+import { useWalletList } from './hooks/useWalletList';
 import { customizedThemeTokens } from './utils/ui';
 
 export type {
@@ -96,6 +98,7 @@ export type {
   ConnectedWallet,
   Tokens,
   WidgetVariant,
+  WalletInfoWithNamespaces,
 };
 export {
   Widget,
@@ -106,6 +109,7 @@ export {
   WidgetProvider,
   useWidget,
   useWallets,
+  useWalletList,
   useWidgetEvents,
   customizedThemeTokens,
   MainEvents,
