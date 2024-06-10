@@ -57,7 +57,7 @@ export const getWalletInfo: (allBlockChains: BlockchainMeta[]) => WalletInfo = (
   const evms = evmBlockchains(allBlockChains);
   return {
     name: 'Rabby',
-    img: 'https://raw.githubusercontent.com/rango-exchange/assets/main/wallets/rabby/icon.svg',
+    img: 'https://raw.githubusercontent.com/rango-exchange/assets/main/wallets/rabby/rabby.svg',
     installLink: {
       CHROME:
         'https://chromewebstore.google.com/detail/rabby-wallet/acmacodkjbdgmoleebolmdjonilkdbch',
