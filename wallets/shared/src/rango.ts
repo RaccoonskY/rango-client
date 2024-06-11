@@ -81,6 +81,7 @@ export enum WalletTypes {
   MY_TON_WALLET = 'mytonwallet',
   SOLFLARE_SNAP = 'solflare-snap',
   LEDGER = 'ledger',
+  TOMO = 'tomo',
 }
 
 export enum Networks {
