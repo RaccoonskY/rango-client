@@ -1,4 +1,4 @@
-import type { UseQueueManagerParams } from './types';
+import type { Emitter } from 'mitt';
 
 import { useManager } from '@rango-dev/queue-manager-react';
 import { useEffect, useState } from 'react';
@@ -10,6 +10,7 @@ import {
 } from './helpers';
 import { migrated, migration } from './migration';
 import { eventEmitter } from './services/eventEmitter';
+import { type UseQueueManagerParams } from './types';
 
 let isCalled = 0;
 
@@ -77,13 +78,14 @@ function useQueueManager(params: UseQueueManagerParams): void {
   }, [params.disconnectedWallet]);
 }
 
-function useEvents() {
+function useEvents<T extends Record<string, unknown>>() {
   /**
    * Making the 'all' method accessible runs the risk of removing all handlers already linked to all events,
    * leading to unforeseen side effects in our widget or in Dapps that utilize it.
    * Instead, we can utilize the 'off' method to detach listeners for specific events.
    */
-  const { all, ...otherMethods } = eventEmitter;
+  const { all, ...otherMethods } = eventEmitter as typeof eventEmitter &
+    Emitter<T>;
   return otherMethods;
 }
 

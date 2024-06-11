@@ -6,6 +6,7 @@ import type {
   WidgetColors,
   WidgetColorsKeys,
   WidgetConfig,
+  WidgetEvents,
   WidgetTheme,
   WidgetVariant,
 } from './types';
@@ -109,6 +110,7 @@ export {
   useWidgetEvents,
   customizedThemeTokens,
   MainEvents,
+  WidgetEvents,
   RouteEventType,
   StepEventType,
   StepExecutionEventStatus,
