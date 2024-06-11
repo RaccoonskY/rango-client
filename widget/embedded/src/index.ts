@@ -6,7 +6,6 @@ import type {
   WidgetColors,
   WidgetColorsKeys,
   WidgetConfig,
-  WidgetEvents,
   WidgetTheme,
   WidgetVariant,
 } from './types';
@@ -49,7 +48,6 @@ import {
   StepEventType,
   StepExecutionBlockedEventStatus,
   StepExecutionEventStatus,
-  useEvents as useWidgetEvents,
 } from '@rango-dev/queue-manager-rango-preset';
 import {
   readAccountAddress,
@@ -65,6 +63,8 @@ import { WidgetWallets } from './containers/Wallets';
 import { Widget } from './containers/Widget';
 import { useWidget } from './containers/WidgetInfo';
 import { WidgetProvider } from './containers/WidgetProvider';
+import { useWidgetEvents } from './hooks/useWidgetEvents';
+import { QuoteEventTypes, WalletEventTypes, WidgetEvents } from './types';
 import { customizedThemeTokens } from './utils/ui';
 
 export type {
@@ -110,6 +110,8 @@ export {
   useWidgetEvents,
   customizedThemeTokens,
   MainEvents,
+  QuoteEventTypes,
+  WalletEventTypes,
   WidgetEvents,
   RouteEventType,
   StepEventType,
