@@ -43,7 +43,6 @@ import type { PendingSwap, PendingSwapStep } from 'rango-types';
 
 import {
   EventSeverity,
-  MainEvents,
   RouteEventType,
   StepEventType,
   StepExecutionBlockedEventStatus,
@@ -64,7 +63,7 @@ import { Widget } from './containers/Widget';
 import { useWidget } from './containers/WidgetInfo';
 import { WidgetProvider } from './containers/WidgetProvider';
 import { useWidgetEvents } from './hooks/useWidgetEvents';
-import { QuoteEventTypes, WalletEventTypes, WidgetEvents } from './types';
+import { MainEvents, QuoteEventTypes, WalletEventTypes } from './types';
 import { customizedThemeTokens } from './utils/ui';
 
 export type {
@@ -112,7 +111,6 @@ export {
   MainEvents,
   QuoteEventTypes,
   WalletEventTypes,
-  WidgetEvents,
   RouteEventType,
   StepEventType,
   StepExecutionEventStatus,

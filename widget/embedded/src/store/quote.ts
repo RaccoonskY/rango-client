@@ -13,12 +13,12 @@ import { subscribeWithSelector } from 'zustand/middleware';
 
 import { ZERO } from '../constants/numbers';
 import {
+  MainEvents,
   type QuoteError,
   QuoteEventTypes,
   type QuoteWarning,
   type SelectedQuote,
   type Wallet,
-  WidgetEvents,
 } from '../types';
 import { isPositiveNumber } from '../utils/numbers';
 import { getQuoteToTokenUsdPrice } from '../utils/quote';
@@ -309,7 +309,7 @@ useQuoteStore.subscribe((selectedState, previousSelectedState) => {
     selectedState.inputAmount !== previousSelectedState.inputAmount
   ) {
     // useEffect hook can not be used in Zustand subscribe
-    eventEmitter.emit(WidgetEvents.QuoteEvent, {
+    eventEmitter.emit(MainEvents.QuoteEvent, {
       type: QuoteEventTypes.QUOTE_INPUT_UPDATE,
       payload: {
         fromBlockchain: selectedState.fromBlockchain?.name,
@@ -333,7 +333,7 @@ useQuoteStore.subscribe((selectedState, previousSelectedState) => {
     selectedState.selectedQuote?.requestId !==
     previousSelectedState.selectedQuote?.requestId
   ) {
-    eventEmitter.emit(WidgetEvents.QuoteEvent, {
+    eventEmitter.emit(MainEvents.QuoteEvent, {
       type: QuoteEventTypes.QUOTE_UPDATE,
       payload: selectedState.selectedQuote
         ? {

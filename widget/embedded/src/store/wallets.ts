@@ -8,7 +8,7 @@ import { subscribeWithSelector } from 'zustand/middleware';
 
 import { useWidgetEvents } from '../hooks/useWidgetEvents';
 import { httpService } from '../services/httpService';
-import { WalletEventTypes, WidgetEvents } from '../types';
+import { MainEvents, WalletEventTypes } from '../types';
 import { createTokenHash } from '../utils/meta';
 import {
   isAccountAndWalletMatched,
@@ -63,7 +63,7 @@ export const useWalletsStore = createSelectors(
         balances: {},
         loading: false,
         connectWallet: (accounts, findToken) => {
-          eventEmitter.emit(WidgetEvents.WalletEvent, {
+          eventEmitter.emit(MainEvents.WalletEvent, {
             type: WalletEventTypes.CONNECTED,
             payload: { walletType: accounts[0].walletType, accounts },
           });
@@ -102,7 +102,7 @@ export const useWalletsStore = createSelectors(
           getWalletsDetails(accounts, findToken);
         },
         disconnectWallet: (walletType) => {
-          eventEmitter.emit(WidgetEvents.WalletEvent, {
+          eventEmitter.emit(MainEvents.WalletEvent, {
             type: WalletEventTypes.DISCONNECTED,
             payload: { walletType },
           });

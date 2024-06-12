@@ -1,9 +1,13 @@
 import type { SelectedQuote } from './quote';
 import type { Wallet } from './wallets';
 
+import { MainEvents as QueueManagerEvents } from '@rango-dev/queue-manager-rango-preset';
+
 type Account = Wallet;
 
-export enum WidgetEvents {
+export enum MainEvents {
+  RouteEvent = QueueManagerEvents.RouteEvent,
+  StepEvent = QueueManagerEvents.StepEvent,
   QuoteEvent = 'quoteEvent',
   WalletEvent = 'walletEvent',
 }
@@ -61,6 +65,6 @@ export type WalletEventData =
     };
 
 export type Events = {
-  [WidgetEvents.QuoteEvent]: QuoteEventData;
-  [WidgetEvents.WalletEvent]: WalletEventData;
+  [MainEvents.QuoteEvent]: QuoteEventData;
+  [MainEvents.WalletEvent]: WalletEventData;
 };
